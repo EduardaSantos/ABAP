@@ -1,0 +1,98 @@
+
+transações
+
+SE09 trasport organizer: criar/definir uma request
+
+(se utiliza pra criar o ambiente)
+
+request trasporta  objetos prara outros ambientes
+
+
+ordem de trasporte: DEV(desenvolvimento) - quas( qualidade) - PRD(produção)
+
+
+tipos de request
+workbrench
+customizing
+
+
+padrao de descrição de request: [treinamento abap]-[<iniciais do desenvolvedor>-<XXXX>-<YYYY>]-<<descrição>
+
+codigo ordem MT1K900919
+
+
+SE80 verifica o pacote
+
+selecionar pacote 
+
+SE38 criar programa
+
+nome do programa padrao treinamento
+
+ZYYYT_DESC
+
+Z- prefixo
+YYY- iniciais
+T-tipo do programa(inicialmente "R") 
+DESC: descrição breve
+
+vai abrir pop-up
+titulo - nome de preferencia
+tipo programa executavel
+status programa de teste
+aplicação - base(sitema)
+
+vai abrir outro pop up
+definir pacote
+
+vai abrir outro 
+colocar codigo ordem
+
+confirmar se ta tudo certo -> (ir para- caracteristicas)
+                                          utilitarios - versão administração de versoes-   clicar e ver se a versão bate com a 
+
+request
+
+
+
+
+
+criando programa
+
+atalhos:
+ctrl + s =  salva o codigo
+ctrl + F1 = modificar codigo
+ctrl + F2 = verifica
+ctrl + F3 = ativa programa
+F8 = roda programa
+
+
+
+Write: printa a frase na tela, usar aspas simples
+         WRITE 'Ola mundo'.
+
+para encerrar a linha usar ponto final
+
+
+sintaxe tela de seleção
+
+SELECTION-SCREEN: BEGIN OF BLOCK<nome do bloco> WITH FRAME TITLE<titulo do bloco>.
+SELECT-OPTIONS:<nome da variavel> FOR <TIPO DE DADOS>
+PARAMETERS:<nome da variavle> TYPE<tipo de dados>.
+SELECTION-SCREEN: END OF BLOCK<nome do bloco>
+
+
+CODIGO AULA 1:
+
+
+
+TABLES: bsid,t001.
+
+SELECTION-SCREEN: BEGIN OF BLOCK b01 WITH FRAME TITLE text-t01.
+  PARAMETERS:  p_emp TYPE t001-BUKRS .
+  SELECT-OPTIONS: s_cli FOR BSID-KUNNR .
+  SELECTION-SCREEN: END OF BLOCK b01.
+
+  SELECTION-SCREEN: BEGIN OF BLOCK b02 WITH FRAME TITLE text-t02.
+    SELECT-OPTIONS: s_data FOR BSID-BLDAT.
+    SELECTION-SCREEN: END OF BLOCK b02.
