@@ -1,0 +1,127 @@
+SE11 - DICIONARIO DE DADOS
+
+SE16N- CONSULTAR TABELAS
+
+
+COMANDO TYPES:  é a declaração de tipos de dados de forma local
+
+TYPES: BEGIN OF <NOME DO TIPO>,
+                         <NOME DO CAMPO> TYPE <TIPO DO CAMPO>,
+                        (N CAMPOS)
+END OF <NOME DO TIPO>.
+
+COMANDO DATA:
+
+DATA<NOME DA WORK AREA> TYPE <NOME DO TIPO>
+
+SINTAXE PARA PREENCHER UMA TABLE:
+
+APPEND<NOME DA WORK AREA> TO <NOME DA TABELA>.
+
+COMANDO LOOP
+
+LOOP AT <NOME DA TABELA> INTO <NOME DA WORK AREA>.
+ENDLOOP.
+
+EXEMPLO:
+
+    TYPES: BEGIN OF tp_dados,
+      user TYPE uname,
+      nome TYPE String,
+      sobrenome TYPE String,
+      idade TYPE i,
+
+      END OF tp_dados.
+
+    DATA ls_info TYPE tp_dados.
+
+      ls_info-user = sy-uname.
+      ls_info-nome = 'Eduarda'.
+      ls_info-sobrenome = 'Santos'.
+      ls_info-idade = 18.
+
+      NEW-LINE.
+
+      WRITE: /'Utilizando estrutura'.
+
+
+
+
+      WRITE: /'USER:', ls_info-user,
+            /'nome', ls_info-nome,
+            /'Sobrenome', ls_info-sobrenome,
+            /'Idade', ls_info-idade.
+
+DATA lt_indo TYPE TABLE OF tp_dados.
+APPEND ls_info TO lt_info.
+ls_info-idade = 19.
+APPEND ls_info TO lt_info.
+
+LOOP AT lt_info INTO ls_info.
+
+WRITE: / 'LINHA', sy-tabix.
+
+WRITE: /'USER', ls_info-user,
+      /'nome', ls_info-nome,
+      /'Sobrenome', ls_info-sobrenome,
+     /'Idade',ls_info-idade.
+
+SKIP.
+UNLINE.
+ENDLOOP.
+
+
+COMANDO SELECT: É UTILIZADO PARA ACESSAR DADOS AARMAZENADOS EM TABELAS
+
+SELECT<NOME DO CAMPO>
+               <NOME DO CAMPO>
+FROM<NOME DA TABELA>
+INTO TABLE<NOME DA TABELA INTERNA>
+          WHERE<CONDIÇÃO>
+        AND<CONDIÇÃO>
+
+
+NÃO É RECOMENDADO USAR SELECT DENTRO DE LOOP
+
+COMANDO FOR ALL ENTRIES IN: É UTILIZADO PARA FAZER SELEÇOES USANDO REGISTROS JA ARMAZENADOS EM UMA SEGUNDA TABELA INTERNA
+
+FOR ALL ENTRIES IN <nome da tabela>
+
+
+
+CONSTANTS:c_aa TYPE sflight-carrid VALUE 'AA',
+           c_64 TYPE sflight-connid VALUE '64'.
+
+TYPES:BEGIN OF tp_dados2,
+  carrid TYPE sflight-carrid,
+  fldate TYPE sflight-fldate,
+  planetype TYPE sflight-planetype,
+  END OF tp_dados2,
+BEGIN OF tp_dados,
+carrid TYPE sflights-carrid,
+connid TYPE sflights-connid,
+fldate TYPE sflights-fldate,
+END OF tp_dados.
+   
+
+DATA gt_dados TYPE TABLE OF: tp_dados.
+DATA gt_dados2 TYPE TABLE OF: tp_dados2.
+
+DATA gs_dados LIKE LINE OF gt_dados.
+DATA gs_dados2 LIKE LINE OF gt_dados2.
+
+
+SELECT carrid
+  connid
+  FROM sflights
+  INTO TABLE gt_dados
+  WHERE carrid EQ c_aa
+  AND connid EQ c_64.
+  
+SELECT carrid
+  fldate
+  planetype
+  FROM sflight
+  INTO TABLE gt_dados2
+  FOR ALL ENTRIES IN gt_dados
+  WHERE carrid EQ gt_dados-carrid.
