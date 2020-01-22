@@ -1,0 +1,73 @@
+REPORT zedsr_programa.
+
+TABLES: bsid,t001.
+
+SELECTION-SCREEN: BEGIN OF BLOCK b01 WITH FRAME TITLE text-t01.
+PARAMETERS:  p_emp TYPE t001-bukrs.
+SELECT-OPTIONS: s_cli FOR bsid-kunnr.
+SELECTION-SCREEN: END OF BLOCK b01.
+
+SELECTION-SCREEN: BEGIN OF BLOCK b02 WITH FRAME TITLE text-t02.
+SELECT-OPTIONS: s_data FOR bsid-bldat.
+SELECTION-SCREEN: END OF BLOCK b02.
+
+TYPES: BEGIN OF tp_kna1,
+         kunnr TYPE kna1-kunnr,
+         name1 TYPE kna1-name1,
+         stcd1 TYPE kna1-stcd1,
+       END OF tp_kna1.
+
+DATA lt_kna1 TYPE TABLE OF tp_kna1.
+
+TYPES: BEGIN OF tp_bsid,
+         bukrs TYPE bsid-bukrs,
+         kunnr TYPE bsid-kunnr,
+         zuonr TYPE bsid-zuonr,
+         gjahr TYPE bsid-gjahr,
+         belnr TYPE bsid-belnr,
+         buzei TYPE bsid-buzei,
+         dmbtr TYPE bsid-dmbtr,
+         bldat TYPE bsid-bldat,
+       END OF tp_bsid.
+
+
+DATA lt_bsid TYPE TABLE OF tp_bsid.
+
+START-OF-SELECTION.
+
+  SELECT kunnr
+    name1
+    stcd1
+   FROM kna1
+   INTO TABLE lt_kna1
+   WHERE kunnr IN s_cli.
+
+  IF sy-subrc IS NOT INITIAL.
+
+    MESSAGE 'Falha na seleção de dados' TYPE 'S' DISPLAY LIKE 'E'.
+
+    LEAVE LIST-PROCESSING.
+
+  ENDIF.
+
+  SELECT bukrs
+    kunnr
+    zuonr
+    gjahr
+    belnr
+    buzei
+    dmbtr
+    bldat
+    FROM bsid
+    INTO TABLE lt_bsid
+    WHERE bukrs EQ p_emp
+    AND kunnr IN s_cli
+    AND bldat IN s_data.
+
+  IF sy-subrc IS NOT INITIAL.
+
+    MESSAGE 'Falha na seleção de dados' TYPE 'S' DISPLAY LIKE 'E'.
+
+    LEAVE LIST-PROCESSING.
+
+  ENDIF.
